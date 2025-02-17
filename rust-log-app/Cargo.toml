@@ -1,0 +1,13 @@
+[package]
+name = "rust-log-app"
+version = "0.1.0"
+edition = "2021"
+
+# Specify the binary entry point
+[[bin]]
+name = "rust-log-app"
+path = "src/main.rs"
+
+[dependencies]
+chrono = "0.4"
+rand = "0.8"
