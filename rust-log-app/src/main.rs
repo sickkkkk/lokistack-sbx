@@ -53,7 +53,7 @@ fn main() {
             .unwrap_or_else(|_| "5".to_string())
             .parse()
             .unwrap_or(5);
-        let randomized_interval = interval + thread_rng().gen_range(0..5);
+        let randomized_interval = interval + thread_rng().gen_range(0..2);
         thread::sleep(Duration::from_secs(randomized_interval));
     }
 }

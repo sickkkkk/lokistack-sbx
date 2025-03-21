@@ -21,13 +21,17 @@ services:
     networks:
       - monitoring
 
-  loki:
-    image: grafana/loki:latest
-    container_name: loki
+  victorialogs:
+    image: victoriametrics/victoria-logs:latest-scratch
+    container_name: victoria-logs
+    ports:
+      - "9428:9428"
+    command: >
+      -retentionPeriod=3d
+      -storageDataPath=/vlogs-data
     volumes:
-      - ./loki/loki-config.yml:/etc/loki/loki-config.yml
+      - victoria-logs-data:/vlogs-data
     restart: unless-stopped
-    command: -config.file=/etc/loki/loki-config.yml
     networks:
       - monitoring
 
@@ -36,7 +40,7 @@ services:
     container_name: grafana
     depends_on:
       - prometheus
-      - loki
+      - victorialogs
     volumes:
       - grafana-storage:/var/lib/grafana
     restart: unless-stopped
@@ -45,14 +49,14 @@ services:
     networks:
       - monitoring
 
-  promtail:
-    image: grafana/promtail:latest
-    container_name: promtail
+  fluentbit:
+    image: fluent/fluent-bit:latest
+    container_name: fluentbit
     volumes:
       - logs-volume:/logs
-      - ./promtail/promtail-config.yml:/etc/promtail/config.yml
+      - ./fluent-bit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro
+      - ./fluent-bit/parsers.conf:/fluent-bit/etc/parsers.conf:ro
     restart: unless-stopped
-    command: -config.file=/etc/promtail/config.yml
     networks:
       - monitoring
 
@@ -63,8 +67,9 @@ services:
       - logs-volume:/logs
     environment:
       - LOG_FILE_PATH=/logs/rust-app.log
+      - LOG_INTERVAL=0.1
     depends_on:
-      - loki
+      - victorialogs
     networks:
       - monitoring
 
@@ -77,13 +82,14 @@ services:
       - "80:80"
     depends_on:
       - grafana
-      - loki
+      - victorialogs
     networks:
       - monitoring
 
 volumes:
   grafana-storage:
   logs-volume:
+  victoria-logs-data:
 
 networks:
   monitoring:
