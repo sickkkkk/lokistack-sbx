@@ -42,30 +42,6 @@ services:
     networks:
       - monitoring
 
-  fluentbit:
-    image: fluent/fluent-bit:latest
-    container_name: fluentbit
-    volumes:
-      - logs-volume:/logs
-      - ./fluent-bit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro
-      - ./fluent-bit/parsers.conf:/fluent-bit/etc/parsers.conf:ro
-    restart: unless-stopped
-    networks:
-      - monitoring
-
-  rust-app:
-    build: ./rust-log-app
-    container_name: rust-log-app
-    volumes:
-      - logs-volume:/logs
-    environment:
-      - LOG_FILE_PATH=/logs/rust-app.log
-      - LOG_INTERVAL=0.1
-    depends_on:
-      - victorialogs
-    networks:
-      - monitoring
-
   haproxy:
     image: haproxy:latest
     container_name: haproxy
@@ -81,7 +57,6 @@ services:
 
 volumes:
   grafana-storage:
-  logs-volume:
   victoria-logs-data:
 
 networks:
