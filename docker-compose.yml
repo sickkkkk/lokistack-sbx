@@ -10,17 +10,6 @@ services:
     networks:
       - monitoring
 
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor:latest
-    container_name: cadvisor
-    restart: unless-stopped
-    privileged: true
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /var/lib/docker:/var/lib/docker:ro
-    networks:
-      - monitoring
-
   victorialogs:
     image: victoriametrics/victoria-logs:latest-scratch
     container_name: victoria-logs
@@ -37,7 +26,10 @@ services:
 
   grafana:
     image: grafana/grafana:latest
+    build: ./grafana
     container_name: grafana
+    expose:
+     - "3000"
     depends_on:
       - prometheus
       - victorialogs
@@ -46,7 +38,6 @@ services:
     restart: unless-stopped
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
-      - GF_PLUGINS_PREINSTALL=victoriametrics-logs-datasource
       - GF_LOG_LEVEL=debug
     networks:
       - monitoring
