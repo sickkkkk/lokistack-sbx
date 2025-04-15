@@ -11,6 +11,7 @@ scrape_configs:
           - prometei-nfs.int.prometei.by:9100
           - pg1.int.prometei.by:9100
           - pg2.int.prometei.by:9100
+          - pg3.int.prometei.by
           - pgcluster.int.prometei.by:9100
           - prometei-etcd.int.prometei.by:9100
         labels:
