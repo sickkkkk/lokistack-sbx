@@ -18,3 +18,13 @@ scrape_configs:
           env: dev
           role: infra
           os: centos9
+  - job_name: 'postgres_exporter'
+    static_configs:
+      - targets:
+          - pg1.int.prometei.by:9187
+          - pg2.int.prometei.by:9187
+          - pg3.int.prometei.by:9187
+        labels:
+          env: dev
+          role: db
+          os: centos9
