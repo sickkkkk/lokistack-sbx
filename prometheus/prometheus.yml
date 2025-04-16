@@ -34,6 +34,8 @@ scrape_configs:
           - win10canary.int.prometei.by:9182
           - sxw-srv.int.prometei.by:9182
           - 1CAPP0.int.prometei.by:9182
+          - prometei-dc1.int.prometei.by:9182
+          - prometei-dc2.int.prometei.by:9182
         labels:
           env: dev
           role: userpc
