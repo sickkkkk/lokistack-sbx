@@ -32,6 +32,7 @@ scrape_configs:
     static_configs:
       - targets:
           - win10canary.int.prometei.by:9182
+          - sxw-srv.int.prometei.by:9182
         labels:
           env: dev
           role: userpc
