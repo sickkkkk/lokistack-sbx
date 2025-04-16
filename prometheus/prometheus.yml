@@ -32,7 +32,3 @@ scrape_configs:
     static_configs:
       - targets:
           - win10canary.int.prometei.by:9182
-        labels:
-          env: dev
-          role: db
-          os: centos9
