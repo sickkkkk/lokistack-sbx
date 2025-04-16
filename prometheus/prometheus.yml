@@ -28,3 +28,11 @@ scrape_configs:
           env: dev
           role: db
           os: centos9
+  - job_name: 'windows_exporter'
+    static_configs:
+      - targets:
+          - win10canary.int.prometei.by:9182
+        labels:
+          env: dev
+          role: db
+          os: centos9
